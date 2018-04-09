@@ -180,15 +180,29 @@ class SoundDeviceStream(object):
       block_size: size in bytes of each read and write operation.
       flush_size: size in bytes of silence data written during flush operation.
     """
-    def __init__(self, sample_rate, sample_width, block_size, flush_size):
+    def __init__(self, sample_rate, sample_width, block_size, flush_size,direction):
         if sample_width == 2:
             audio_format = 'int16'
         else:
             raise Exception('unsupported sample width:', sample_width)
-        self._audio_stream = sd.RawStream(
-            samplerate=sample_rate, dtype=audio_format, channels=1,
-            blocksize=int(block_size/2),  # blocksize is in number of frames.
-        )
+#        self._audio_stream = sd.RawStream(
+#            samplerate=sample_rate, dtype=audio_format, channels=1,
+#            blocksize=int(block_size/2),  # blocksize is in number of frames.
+#        )
+        if direction == 0:
+            self._audio_stream = sd.RawInputStream(
+                samplerate=sample_rate, dtype=audio_format, channels=1,
+                blocksize=int(block_size/2) # blocksize is in number of frames.
+            )
+            self._block_size = block_size
+            self._flush_size = flush_size
+            self._sample_rate = sample_rate
+            
+        if direction == 1:
+            self._audio_stream = sd.RawOutputStream(
+                samplerate=sample_rate, dtype=audio_format, channels=1,
+                blocksize=int(block_size/2) # blocksize is in number of frames.
+            )
         self._block_size = block_size
         self._flush_size = flush_size
         self._sample_rate = sample_rate

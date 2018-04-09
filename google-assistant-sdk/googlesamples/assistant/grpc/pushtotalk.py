@@ -331,7 +331,8 @@ def main(api_endpoint, credentials, project_id,
                 sample_rate=audio_sample_rate,
                 sample_width=audio_sample_width,
                 block_size=audio_block_size,
-                flush_size=audio_flush_size
+                flush_size=audio_flush_size,
+                direction=0
         )
     if output_audio_file:
         audio_sink = audio_helpers.WaveSink(
@@ -344,7 +345,8 @@ def main(api_endpoint, credentials, project_id,
                 sample_rate=audio_sample_rate,
                 sample_width=audio_sample_width,
                 block_size=audio_block_size,
-                flush_size=audio_flush_size
+                flush_size=audio_flush_size,
+                direction=1
         )
     # Create conversation stream with the given audio source and sink.
     conversation_stream = audio_helpers.ConversationStream(
